@@ -1,10 +1,10 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.presentation.telegram.TelegramBotStep
+import studio.alot.dsbotmaker.TelegramBotStep
 
 
-class StayOnThisStepProcessor : Processor {
+internal class StayOnThisStepProcessor : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
         dependency as Processor.Result.CurrentStepResult
         val currentStep = dependency.currentStep

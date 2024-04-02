@@ -1,17 +1,17 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.presentation.telegram.TelegramBotStep
+import studio.alot.dsbotmaker.TelegramBotStep
 
-interface Processor {
+internal interface Processor {
     fun process(upd: Update, dependency: Result): Result
 
     sealed class Result {
-        object ExitProcessingResult : Result()
-        object ContinueEmptyProcessingResult : Result()
-        open class UserIdResult(val userChatId: Long) : Result()
-        open class CurrentStepResult(userChatId: Long, val currentStep: TelegramBotStep) : UserIdResult(userChatId)
-        class SendStepMessageResult(
+        data object ExitProcessingResult : Result()
+        data object ContinueEmptyProcessingResult : Result()
+        internal open class UserIdResult(val userChatId: Long) : Result()
+        internal open class CurrentStepResult(userChatId: Long, val currentStep: TelegramBotStep) : UserIdResult(userChatId)
+        internal class SendStepMessageResult(
             userChatId: Long,
             currentStep: TelegramBotStep,
             val stepToMove: TelegramBotStep,
@@ -19,7 +19,7 @@ interface Processor {
         ) :
             CurrentStepResult(userChatId, currentStep)
 
-        class SendErrorMessageResult(
+        internal class SendErrorMessageResult(
             userChatId: Long,
             currentStep: TelegramBotStep,
             val errorMsg: String,
@@ -27,7 +27,7 @@ interface Processor {
         ) :
             CurrentStepResult(userChatId, currentStep)
 
-        class EditInlineButtonsMessageResult(
+        internal class EditInlineButtonsMessageResult(
             userChatId: Long,
             currentStep: TelegramBotStep
         ) :

@@ -1,7 +1,7 @@
 package studio.alot.dsbotmaker
 
-interface Configuration {
-    val mainStepType: StepType
+interface DeepStateBotConfig {
+    val mainStepType: String
     val botUsername: String
     val botToken: String
 

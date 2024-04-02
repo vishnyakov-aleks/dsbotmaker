@@ -1,16 +1,12 @@
-package studio.alot.avitowheelsparser.domain
+package studio.alot.dsbotmaker
 
-import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.objects.Message
-import studio.alot.avitowheelsparser.data.TgUserEntity
-import studio.alot.avitowheelsparser.data.TgUserRepository
 
-@Component
-class StartMessageHandler(
+internal class StartMessageHandler(
     private val userRepository: TgUserRepository
-)  {
+) {
 
-    fun processStartCommand(message: Message) {
+    fun processStartCommand(mainStep: String, message: Message) {
         val user = message.from
         userRepository.save(
             TgUserEntity(
@@ -18,7 +14,7 @@ class StartMessageHandler(
                 user.firstName,
                 user.lastName,
                 user.userName,
-                null
+                currentStep = mainStep
             )
         )
     }

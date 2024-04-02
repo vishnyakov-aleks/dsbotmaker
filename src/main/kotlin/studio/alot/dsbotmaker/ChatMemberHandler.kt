@@ -1,16 +1,14 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
-import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated
 
-@Component
-class ChatMemberHandler {
+internal class ChatMemberHandler {
     fun processPacket(myChatMember: ChatMemberUpdated): ProcessPacketResult {
         return ProcessPacketResult.RESULT_OK
     }
 
 
-    enum class ProcessPacketResult {
+    internal enum class ProcessPacketResult {
         RESULT_OK,
     }
 }

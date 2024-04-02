@@ -1,18 +1,27 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
-import studio.alot.avitowheelsparser.data.Step
+import java.io.Serializable
+
 
 class DeepStateBotInstance(
     private val stepHandler: StepHandler,
-    private val tgBotSender: TelegramBotSender) {
+    val sender: TelegramBotSender
+) {
     suspend fun forceChangeStep(
         userChatId: Long,
-        step: Step,
+        stepType: String,
         errorMsg: String? = null
     ) {
-        stepHandler.updateStep(userChatId, step)
-        tgBotSender.sendStepMessage(userChatId, step, errorMsg)
+        stepHandler.updateStep(userChatId, stepType)
+        sender.sendStepMessage(userChatId, stepType, errorMsg)
     }
 
+    fun <T: Serializable> saveCookie(userChatId: Long, vararg pair: Pair<CookieKey<T>, T?>) {
+        stepHandler.saveCookie(userChatId, *pair)
+    }
+
+    fun <T : Serializable> getCookie(userChatId: Long, cookieKey: CookieKey<T>): T? {
+        return stepHandler.getCookie(userChatId, cookieKey)
+    }
 
 }

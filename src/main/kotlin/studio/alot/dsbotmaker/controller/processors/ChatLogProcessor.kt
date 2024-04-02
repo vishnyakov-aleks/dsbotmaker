@@ -1,7 +1,7 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-class ChatLogProcessor(
+internal class ChatLogProcessor(
 ) : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
         if (upd.message != null) {

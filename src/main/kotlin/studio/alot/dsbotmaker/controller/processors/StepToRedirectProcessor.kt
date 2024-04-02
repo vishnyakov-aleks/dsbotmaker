@@ -1,11 +1,11 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.domain.TgStepHandler
-import studio.alot.avitowheelsparser.presentation.telegram.Navigator
-import studio.alot.avitowheelsparser.presentation.telegram.TelegramBotStep
+import studio.alot.dsbotmaker.Navigator
+import studio.alot.dsbotmaker.TelegramBotStep
+import studio.alot.dsbotmaker.TgStepHandler
 
-class StepToRedirectProcessor(
+internal class StepToRedirectProcessor(
     private val navigator: Navigator,
     private val stepHandler: TgStepHandler
 ) : Processor {
@@ -24,7 +24,7 @@ class StepToRedirectProcessor(
             stepToMove.getAnotherStep(userChatId)
                 ?.let {
                     stepHandler.updateStep(userChatId, it)
-                    stepToMove = navigator.getStepFromType(it)
+                    stepToMove = navigator.getStepFromString(it)
                 }
                 ?: break
         }

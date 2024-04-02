@@ -1,4 +1,4 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller
+package studio.alot.dsbotmaker.controller
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -6,23 +6,22 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.domain.StartMessageHandler
-import studio.alot.avitowheelsparser.domain.TgStepHandler
-import studio.alot.avitowheelsparser.presentation.telegram.*
-import studio.alot.avitowheelsparser.presentation.telegram.controller.processors.*
+import studio.alot.dsbotmaker.*
+import studio.alot.dsbotmaker.controller.processors.*
 
 
-abstract class TGBotController(
+internal class TGBotController(
     private val stepHandler: TgStepHandler,
     private val navigator: Navigator,
     private val tgBot: TGBot,
+
+    onUpdateReceivedDoBefore: (update: Update) -> Boolean,
+    deepStateBotConfig: DeepStateBotConfig,
     chatMemberHandler: ChatMemberHandler?,
     botStartMessageHandler: StartMessageHandler,
 ) : CoroutineScope {
 
     override val coroutineContext = CoroutineName("TGBot")
-
-    abstract fun onUpdateReceivedDoBefore(upd: Update): Boolean
 
     init {
         tgBot.init(navigator) { this.onUpdateReceived(it) }
@@ -33,7 +32,11 @@ abstract class TGBotController(
         ChatLogProcessor(),
         ChatMemberHandlerProcessor(chatMemberHandler),
         UserIdFetchProcessor(),
-        StartChatProcessor(botStartMessageHandler),
+        StartChatProcessor(
+            navigator.getStepFromString(navigator.mainStepType),
+            botStartMessageHandler,
+            deepStateBotConfig
+        ),
         CurrentStepFetchProcessor(navigator, stepHandler),
         NavButtonProcessor(navigator, stepHandler),
         StepToRedirectProcessor(navigator, stepHandler),
@@ -101,8 +104,8 @@ abstract class TGBotController(
         }
 
         val step = if (result.returnToMainStep) {
-            stepHandler.updateStep(result.userChatId, navigator.mainStep)
-            navigator.getStepFromType(navigator.mainStep)
+            stepHandler.updateStep(result.userChatId, navigator.mainStepType)
+            navigator.getStepFromString(navigator.mainStepType)
         } else {
             result.currentStep
         }
@@ -118,7 +121,7 @@ abstract class TGBotController(
         val currentStep = result.currentStep
         val userChatId = result.userChatId
 
-        if (currentStep is TelegramBotStep.InlineButtonsSupported) {
+        if (upd.hasCallbackQuery() && currentStep is TelegramBotStep.InlineButtonsSupported) {
             tgBot.editStepMessage(
                 userChatId,
                 upd.callbackQuery.message.messageId,

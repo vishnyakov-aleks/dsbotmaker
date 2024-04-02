@@ -1,11 +1,12 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.domain.TgStepHandler
-import studio.alot.avitowheelsparser.presentation.telegram.Navigator
-import studio.alot.avitowheelsparser.presentation.telegram.TelegramBotStep
+import studio.alot.dsbotmaker.Navigator
+import studio.alot.dsbotmaker.TelegramBotStep
+import studio.alot.dsbotmaker.TgStepHandler
+import studio.alot.dsbotmaker.exceptions.OnNextStepMessageReasonException
 
-class GetNextStepProcessor(
+internal class GetNextStepProcessor(
     private val navigator: Navigator,
     private val stepHandler: TgStepHandler
 ) : Processor {
@@ -25,7 +26,7 @@ class GetNextStepProcessor(
                 nextStep,
                 supportMessageBeforeNext = true
             )
-        } catch (e: MessageReasonException) {
+        } catch (e: OnNextStepMessageReasonException) {
             Processor.Result.SendErrorMessageResult(
                 userChatId,
                 currentStep,
@@ -64,7 +65,7 @@ class GetNextStepProcessor(
             )
         }
 
-        val candidateStep = navigator.getStepFromType(candidate)
+        val candidateStep = navigator.getStepFromString(candidate)
 
 
         return if (candidateStep is TelegramBotStep.CanBeSkipped && candidateStep.skipStep(userChatId)) {
@@ -73,6 +74,4 @@ class GetNextStepProcessor(
             candidateStep
         }
     }
-
-    class MessageReasonException(val reasonMsg: String) : Exception()
 }

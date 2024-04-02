@@ -1,11 +1,9 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
-import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.GetFile
 import org.telegram.telegrambots.meta.api.objects.Message
 
-@Component
-class MediaMessageHandler {
+internal class MediaMessageHandler {
 
     fun extractFileLinks(tgBot: TGBot, message: Message): List<String> {
         val fileIdList: List<String> = when {

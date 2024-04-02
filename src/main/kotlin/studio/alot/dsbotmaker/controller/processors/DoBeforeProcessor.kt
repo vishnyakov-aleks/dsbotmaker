@@ -1,8 +1,8 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
 
-class DoBeforeProcessor(private val updateBeforeFun: (upd: Update) -> Boolean) : Processor {
+internal class DoBeforeProcessor(private val updateBeforeFun: (upd: Update) -> Boolean) : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
 
         return if (updateBeforeFun(upd))

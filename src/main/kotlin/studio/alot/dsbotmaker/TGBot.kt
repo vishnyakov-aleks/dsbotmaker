@@ -1,19 +1,20 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
-import org.springframework.beans.factory.annotation.Value
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
-import studio.alot.avitowheelsparser.data.Step
 
-
-abstract class TGBot : TelegramLongPollingBot(), CoroutineScope, TelegramBotSender {
-
-    @Value("\${telegram.bot.enabled}")
-    lateinit var telegramEnabled: String
+internal class TGBot(
+    private val botUsername: String,
+    private val stepHandler: StepHandler,
+    botToken: String
+) : TelegramLongPollingBot(botToken),
+    CoroutineScope, TelegramBotSender {
 
     override val coroutineContext = CoroutineName("TGBot")
 
@@ -21,21 +22,23 @@ abstract class TGBot : TelegramLongPollingBot(), CoroutineScope, TelegramBotSend
 
     private lateinit var navigator: Navigator
 
+    override fun getBotUsername(): String {
+        return botUsername
+    }
+
     override fun navigator(): Navigator {
         return navigator
     }
 
     fun init(navigator: Navigator, callback: (Update) -> Unit) {
-        if (telegramEnabled.toBoolean()) {
-            this.navigator = navigator
-            val telegramBotsApi = TelegramBotsApi(DefaultBotSession::class.java)
-            telegramBotsApi.registerBot(this)
-            try {
-                updateReceivedCallback = callback
-            } catch (ex: Throwable) {
-                //todo передать Payload в делегирование
-                ex.printStackTrace()
-            }
+        this.navigator = navigator
+        val telegramBotsApi = TelegramBotsApi(DefaultBotSession::class.java)
+        telegramBotsApi.registerBot(this)
+        try {
+            updateReceivedCallback = callback
+        } catch (ex: Throwable) {
+            //todo передать Payload в делегирование
+            ex.printStackTrace()
         }
     }
 
@@ -44,14 +47,36 @@ abstract class TGBot : TelegramLongPollingBot(), CoroutineScope, TelegramBotSend
             updateReceivedCallback(upd)
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
+            val userId = if (upd.hasMessage()) {
+                upd.message.chatId
+            } else if (upd.hasCallbackQuery()) {
+                upd.callbackQuery.from.id
+            } else {
+                return
+            }
+
+            runBlocking {
+                stepHandler.updateStep(userId, navigator.mainStepType)
+                sendStepMessage(
+                    userId,
+                    navigator.mainStepType,
+                    "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
+                )
+            }
+
         }
     }
 
-    override suspend fun sendStepMessage(userChatId: Long, step: Step, errorMsg: String?) {
+    override suspend fun sendStepMessage(userChatId: Long, stepType: String, errorMsg: String?) {
         try {
-            super.sendStepMessage(userChatId, step, errorMsg)
+            super.sendStepMessage(userChatId, stepType, errorMsg)
         } catch (t: Throwable) {
             t.printStackTrace()
+            stepHandler.updateStep(userChatId, navigator.mainStepType)
+            sendStepMessage(
+                userChatId, navigator().mainStepType,
+                "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
+            )
         }
     }
 
@@ -60,6 +85,11 @@ abstract class TGBot : TelegramLongPollingBot(), CoroutineScope, TelegramBotSend
             super.sendStepMessage(userChatId, step, errorMsg)
         } catch (t: Throwable) {
             t.printStackTrace()
+            stepHandler.updateStep(userChatId, navigator.mainStepType)
+            sendStepMessage(
+                userChatId, navigator().mainStepType,
+                "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
+            )
         }
     }
 }

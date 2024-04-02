@@ -1,29 +1,28 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
-import studio.alot.avitowheelsparser.data.Step
 
-abstract class Navigator(
-    private val steps: List<TelegramBotStep>
+class Navigator(
+    private val steps: List<TelegramBotStep>,
+    deepStateBotConfig: DeepStateBotConfig,
 ) {
 
-    abstract val mainStep: Step
-    protected abstract val stepMap: Map<Step?, Set<Step>>
+    internal val mainStepType = deepStateBotConfig.mainStepType
 
-    fun getStepFromType(type: Step): TelegramBotStep {
+    fun getStepFromString(type: String): TelegramBotStep {
         return steps.first { it.getType() == type }
     }
 
     fun getNavigateButtons(step: TelegramBotStep.ButtonsSupported?): List<KeyboardRow> {
-        if (step is TelegramBotStep.NoSupportNavigateButtons) {
+        if (step == null || step.getType() == mainStepType || step is TelegramBotStep.NoSupportNavigateButtons) {
             return emptyList()
         }
 
         return listOf(KeyboardRow().apply {
             val stepType = (step as? TelegramBotStep)?.getType()
-            if (stepType != mainStep) {
+            if (stepType != mainStepType) {
                 if (step !is TelegramBotStep.NoSupportBackButton) {
                     add(NAV_BACK_BUTTON)
                 }
@@ -37,9 +36,9 @@ abstract class Navigator(
 
     fun getNavigateButtons(step: TelegramBotStep.InlineButtonsSupported?): List<List<InlineKeyboardButton>> {
         val stepType = (step as? TelegramBotStep)?.getType()
-        return if (step is TelegramBotStep.NoSupportInlineNavigateButtons) {
+        return if (step == null || stepType == mainStepType || step is TelegramBotStep.NoSupportInlineNavigateButtons) {
             return emptyList()
-        } else if (stepType != mainStep) {
+        } else if (stepType != mainStepType) {
             listOf(ArrayList<InlineKeyboardButton>().apply {
                 if (step !is TelegramBotStep.NoSupportInlineBackButton) {
                     add(
@@ -59,24 +58,24 @@ abstract class Navigator(
     }
 
 
-    fun navButtonStep(upd: Update, userChatId: Long, currentStep: TelegramBotStep?): Step? {
-        var navTo: Step? = null
+    fun navButtonStep(upd: Update, userChatId: Long, currentStep: TelegramBotStep?): String? {
+        var navTo: String? = null
 
         if (upd.hasCallbackQuery()) {
             val callbackData = upd.callbackQuery.data
 
             if (callbackData == NAV_HOME_BUTTON_CALLBACK) {
-                navTo = mainStep
+                navTo = mainStepType
             } else if (currentStep != null && callbackData == NAV_BACK_BUTTON_CALLBACK) {
-                navTo = previousStep(userChatId, currentStep.getType())
+                navTo = previousStep(userChatId, currentStep)
             }
 
         } else if (upd.hasMessage()) {
             val message = upd.message.text
             if (message == NAV_HOME_BUTTON) {
-                navTo = mainStep
+                navTo = mainStepType
             } else if (currentStep != null && message == NAV_BACK_BUTTON) {
-                navTo = previousStep(userChatId, currentStep.getType())
+                navTo = previousStep(userChatId, currentStep)
             }
 
         } else return null
@@ -84,17 +83,16 @@ abstract class Navigator(
         return navTo
     }
 
-    fun previousStep(userChatId: Long, currentStepType: Step): Step? {
-        var variants = stepMap.filter { it.value.contains(currentStepType) }.map { it.key }.toSet()
+    fun previousStep(userChatId: Long, currentStep: TelegramBotStep): String? {
+        val currentStepType = currentStep.getType()
+        var variants = steps.filter { it.nextStepVariantTypes.contains(currentStepType) }.toSet()
         var firstCase = true
         var skipNextStep: Boolean
         do {
             skipNextStep = false
             if (!firstCase) {
-                variants = variants.mapNotNull { variant ->
-                    stepMap
-                        .filter { it.value.contains(variant) }
-                        .map { it.key }
+                variants = variants.map { variant ->
+                    steps.filter { it.nextStepVariantTypes.contains(variant.getType()) }
                 }
                     .flatten()
                     .toSet()
@@ -102,10 +100,10 @@ abstract class Navigator(
                 firstCase = false
             }
 
-            if (variants.contains(mainStep)) {
-                variants = setOf(mainStep)
+            if (variants.any {it.getType() == mainStepType}) {
+                variants = setOf(steps.first { it.getType() == mainStepType })
             } else if (variants.size == 1) {
-                val processor = getStepFromType(variants.first()!!)
+                val processor = variants.first()
                 if (processor is TelegramBotStep.CanBeSkippedInBackStep && processor.skipBackStep(userChatId)) {
                     skipNextStep = true
                 }
@@ -113,7 +111,7 @@ abstract class Navigator(
 
         } while (variants.size > 1 || skipNextStep)
 
-        return variants.firstOrNull()
+        return variants.firstOrNull()?.getType()
     }
 
     fun getStepFromColdAction(coldAction: TelegramBotStep.ColdActionInlineButtonsSupported.ColdAction): TelegramBotStep {
@@ -121,13 +119,15 @@ abstract class Navigator(
             .first { it.getColdAction() == coldAction }
     }
 
-    fun getCandidatesForNextStep(userChatId: Long, currentStep: TelegramBotStep?): Set<Step>? {
-        return stepMap[currentStep?.getType()] ?: let {
-            if (currentStep is TelegramBotStep.MoveBackOnNext) {
-                setOf(previousStep(userChatId, currentStep.getType()) ?: mainStep)
-            } else {
-                null
-            }
+    fun getCandidatesForNextStep(userChatId: Long, currentStep: TelegramBotStep?): Set<String>? {
+        val variants = currentStep?.nextStepVariantTypes
+
+        return if (!variants.isNullOrEmpty()) {
+            variants
+        } else if (currentStep is TelegramBotStep.MoveBackOnNext) {
+            setOf(previousStep(userChatId, currentStep) ?: mainStepType)
+        } else {
+            null
         }
     }
 

@@ -1,8 +1,8 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
 
-class UserIdFetchProcessor : Processor {
+internal class UserIdFetchProcessor : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
         val userId: Long
         val userChatId: Long

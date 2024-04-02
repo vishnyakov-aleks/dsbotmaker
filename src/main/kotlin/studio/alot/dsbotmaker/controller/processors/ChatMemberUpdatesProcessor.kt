@@ -1,9 +1,9 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.presentation.telegram.TelegramBotStep
+import studio.alot.dsbotmaker.TelegramBotStep
 
-class ChatMemberUpdatesProcessor : Processor {
+internal class ChatMemberUpdatesProcessor : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
         dependency as Processor.Result.CurrentStepResult
         val currentStep = dependency.currentStep
@@ -40,5 +40,5 @@ class ChatMemberUpdatesProcessor : Processor {
         return result
     }
 
-    class MessageReasonException(val reasonMsg: String) : Exception()
+    internal class MessageReasonException(val reasonMsg: String) : Exception()
 }

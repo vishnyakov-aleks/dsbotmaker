@@ -1,7 +1,6 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
 import kotlinx.coroutines.delay
-import org.springframework.stereotype.Component
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.ParseMode
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMemberCount
@@ -14,8 +13,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
-import studio.alot.avitowheelsparser.data.Step
 import java.io.Serializable
+import java.lang.Exception
 
 interface TelegramBotSender {
     @Throws(TelegramApiException::class)
@@ -36,7 +35,12 @@ interface TelegramBotSender {
     @Throws(TelegramApiException::class)
     fun execute(method: SendVoice): Message
 
-    suspend fun sendHtmlMessage(chatId: Long, textBody: String, replyKeyboard: ReplyKeyboard?, notify: Boolean = true): Message? {
+    suspend fun sendHtmlMessage(
+        chatId: Long,
+        textBody: String,
+        replyKeyboard: ReplyKeyboard?,
+        notify: Boolean = true
+    ): Message? {
         val message = SendMessage(
             chatId.toString(),
             textBody
@@ -73,10 +77,10 @@ interface TelegramBotSender {
 
     suspend fun sendStepMessage(
         userChatId: Long,
-        step: Step,
+        stepType: String,
         errorMsg: String? = null,
     ) {
-        sendStepMessage(userChatId, navigator().getStepFromType(step), errorMsg)
+        sendStepMessage(userChatId, navigator().getStepFromString(stepType), errorMsg)
     }
 
     suspend fun sendStepMessage(
@@ -84,10 +88,11 @@ interface TelegramBotSender {
         step: TelegramBotStep,
         errorMsg: String? = null,
     ) {
-        errorMsg?.let { sendHtmlMessage(userChatId, it, null) }
+            errorMsg?.let { sendHtmlMessage(userChatId, it, null) }
 
-        val keyboardMarkup = createKeyboardMarkup(userChatId, step)
-        sendHtmlMessage(userChatId, step.getBody(userChatId), keyboardMarkup)
+            val keyboardMarkup = createKeyboardMarkup(userChatId, step)
+            sendHtmlMessage(userChatId, step.getBody(userChatId), keyboardMarkup)
+
     }
 
     suspend fun editStepMessage(

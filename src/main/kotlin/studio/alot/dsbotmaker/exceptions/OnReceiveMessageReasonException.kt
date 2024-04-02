@@ -1,3 +1,3 @@
-package studio.alot.dsbotmaker
+package studio.alot.dsbotmaker.exceptions
 
-class MessageReasonException(val reasonMsg: String) : Exception()
+class OnReceiveMessageReasonException(val reasonMsg: String) : Exception()

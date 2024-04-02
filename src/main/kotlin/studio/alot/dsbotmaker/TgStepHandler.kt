@@ -1,32 +1,26 @@
-package studio.alot.avitowheelsparser.domain
+package studio.alot.dsbotmaker
 
 import org.json.JSONObject
-import org.springframework.stereotype.Component
-import studio.alot.avitowheelsparser.data.Step
-import studio.alot.avitowheelsparser.data.TgUserRepository
+import java.io.Serializable
 
-@Component
-class TgStepHandler(
+internal class TgStepHandler(
     private val userRepository: TgUserRepository
-) {
+) : StepHandler {
 
-    fun getStepRole(userChatId: Long): StepRole {
-        return getCookie(userChatId, Cookie.INTERNAL_USER_ID)?.let { StepRole.USER } ?: StepRole.NOBODY
-    }
 
-    fun saveCookie(userChatId: Long, vararg pair: Pair<Cookie, String?>) {
+    override fun <T: Serializable> saveCookie(userChatId: Long, vararg pair: Pair<CookieKey<T>, T?>) {
         val json = userRepository.getCookies(userChatId) ?: "{}"
         JSONObject(json)
             .also { cookies ->
-                pair.forEach { cookies.put(it.first.name, it.second) }
+                pair.forEach { cookies.put(it.first.key, it.second?.toString()) }
             }.let { userRepository.saveCookies(userChatId, it.toString()) }
     }
 
-    fun getCookie(userChatId: Long, cookie: Cookie): String? {
-        return userRepository.getCookies(userChatId)?.let {
-            JSONObject(it).let {
-                if (it.has(cookie.name)) {
-                    it.getString(cookie.name)
+    override fun <T : Serializable> getCookie(userChatId: Long, cookieKey: CookieKey<T>): T? {
+        return userRepository.getCookies(userChatId)?.let { cookieStr ->
+            JSONObject(cookieStr).let { jsonObject ->
+                if (jsonObject.has(cookieKey.key)) {
+                    jsonObject.getString(cookieKey.key).let { cookieKey.mapValue(it) }
                 } else {
                     null
                 }
@@ -34,23 +28,11 @@ class TgStepHandler(
         }
     }
 
-    fun getUserStep(userChatId: Long): Step? {
+    override fun getUserStep(userChatId: Long): String? {
         return userRepository.getCurrentStep(userChatId)
     }
 
-    fun updateStep(userChatId: Long, step: Step) {
-        userRepository.updateStep(userChatId, step)
-    }
-
-
-    enum class StepRole {
-        NOBODY,
-        USER,
-    }
-
-    enum class Cookie {
-        INTERNAL_USER_ID,
-        CFG_ID,
-        IS_AVITO_MANAGER,
+    override fun updateStep(userChatId: Long, stepType: String) {
+        userRepository.updateStep(userChatId, stepType)
     }
 }

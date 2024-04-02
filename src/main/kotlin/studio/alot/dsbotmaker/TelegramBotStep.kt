@@ -1,16 +1,21 @@
-package studio.alot.avitowheelsparser.presentation.telegram
+package studio.alot.dsbotmaker
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
 import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated
 import org.telegram.telegrambots.meta.api.objects.Message
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
-import studio.alot.avitowheelsparser.data.Step
-import studio.alot.avitowheelsparser.presentation.telegram.controller.processors.*
+import studio.alot.dsbotmaker.controller.processors.ChatMemberUpdatesProcessor
+import studio.alot.dsbotmaker.controller.processors.GetNextStepProcessor
+import studio.alot.dsbotmaker.controller.processors.InlineButtonsProcessor
+import studio.alot.dsbotmaker.controller.processors.MessageProcessor
+import studio.alot.dsbotmaker.exceptions.OnInlineButtonsMessageReasonException
+import studio.alot.dsbotmaker.exceptions.OnNextStepMessageReasonException
+import studio.alot.dsbotmaker.exceptions.OnReceiveMessageReasonException
 
 interface TelegramBotStep {
-
-    fun getType(): Step
+    val nextStepVariantTypes: Set<String>
+    fun getType(): String
 
     fun getBody(userChatId: Long): String
 
@@ -21,14 +26,14 @@ interface TelegramBotStep {
     }
 
     interface MessageReceiver : TelegramBotStep {
-        @Throws(MessageProcessor.MessageReasonException::class)
+        @Throws(OnReceiveMessageReasonException::class)
         fun onMessageReceived(message: Message)
         fun getInputPlaceholder(userChatId: Long): String?
     }
 
     interface RouteSupported : TelegramBotStep {
-        @Throws(GetNextStepProcessor.MessageReasonException::class)
-        fun getNextStep(userChatId: Long, message: String): Step
+        @Throws(OnNextStepMessageReasonException::class)
+        fun getNextStep(userChatId: Long, message: String): String
     }
 
     interface NoSupportBackButton : ButtonsSupported
@@ -47,10 +52,10 @@ interface TelegramBotStep {
         fun getButtons(userChatId: Long): List<List<InlineKeyboardButton>>
         fun getNextStepButtons(userChatId: Long): List<List<InlineKeyboardButton>>
 
-        @Throws(InlineButtonsProcessor.MessageReasonException::class)
+        @Throws(OnInlineButtonsMessageReasonException::class)
         fun onCallbackDataReceived(callbackQuery: CallbackQuery)
 
-        @Throws(InlineButtonsProcessor.MessageReasonException::class)
+        @Throws(OnInlineButtonsMessageReasonException::class)
         fun onCallbackNextStepReceived(callbackQuery: CallbackQuery): Boolean
     }
 
@@ -98,6 +103,6 @@ interface TelegramBotStep {
     }
 
     interface RedirectToAnotherStep : TelegramBotStep {
-        fun getAnotherStep(userChatId: Long): Step?
+        fun getAnotherStep(userChatId: Long): String?
     }
 }

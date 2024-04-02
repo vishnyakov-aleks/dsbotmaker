@@ -1,9 +1,10 @@
-package studio.alot.avitowheelsparser.presentation.telegram.controller.processors
+package studio.alot.dsbotmaker.controller.processors
 
 import org.telegram.telegrambots.meta.api.objects.Update
-import studio.alot.avitowheelsparser.presentation.telegram.TelegramBotStep
+import studio.alot.dsbotmaker.exceptions.OnReceiveMessageReasonException
+import studio.alot.dsbotmaker.TelegramBotStep
 
-class MessageProcessor : Processor {
+internal class MessageProcessor : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
         dependency as Processor.Result.CurrentStepResult
 
@@ -11,10 +12,10 @@ class MessageProcessor : Processor {
         val userChatId = dependency.userChatId
         var result = dependency
         try {
-            if (currentStep is TelegramBotStep.MessageReceiver) {
+            if (currentStep is TelegramBotStep.MessageReceiver && upd.hasMessage()) {
                 currentStep.onMessageReceived(upd.message)
             }
-        } catch (e: MessageReasonException) {
+        } catch (e: OnReceiveMessageReasonException) {
             result = Processor.Result.SendErrorMessageResult(
                 userChatId,
                 currentStep,
@@ -25,6 +26,4 @@ class MessageProcessor : Processor {
 
         return result
     }
-
-    class MessageReasonException(val reasonMsg: String) : Exception()
 }
