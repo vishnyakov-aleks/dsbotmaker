@@ -15,7 +15,7 @@ internal class TGBotController(
     private val navigator: Navigator,
     private val tgBot: TGBot,
 
-    onUpdateReceivedDoBefore: (update: Update) -> Boolean,
+    onUpdateReceivedDoBefore: (update: Update, tgBotSender: TelegramBotSender) -> Boolean,
     deepStateBotConfig: DeepStateBotConfig,
     chatMemberHandler: ChatMemberHandler?,
     botStartMessageHandler: StartMessageHandler,
@@ -28,7 +28,7 @@ internal class TGBotController(
     }
 
     private val script: List<Processor> = listOf(
-        DoBeforeProcessor { onUpdateReceivedDoBefore(it) },
+        DoBeforeProcessor { onUpdateReceivedDoBefore(it, tgBot) },
         ChatLogProcessor(),
         ChatMemberHandlerProcessor(chatMemberHandler),
         UserIdFetchProcessor(),

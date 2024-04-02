@@ -10,7 +10,7 @@ object DeepStateBotMakerFactory {
         deepStateBotConfig: DeepStateBotConfig,
         repository: TgUserRepository,
         steps: List<TelegramBotStep>,
-        onUpdateReceivedDoBefore: (update: Update) -> Boolean,
+        onUpdateReceivedDoBefore: (update: Update, tgBotSender: TelegramBotSender) -> Boolean,
     ): DeepStateBotInstance {
 
         val stepHandler = TgStepHandler(repository)
