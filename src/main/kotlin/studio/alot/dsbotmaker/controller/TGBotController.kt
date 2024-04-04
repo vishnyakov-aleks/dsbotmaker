@@ -51,7 +51,7 @@ internal class TGBotController(
         var result: Processor.Result = Processor.Result.ContinueEmptyProcessingResult
         script.forEach {
             result = it.process(upd, result)
-            println("Processor: ${it::class.simpleName}. Result after: ${result::class.simpleName}")
+//            println("Processor: ${it::class.simpleName}. Result after: ${result::class.simpleName}")
             when (result) {
                 is Processor.Result.ExitProcessingResult -> return
                 is Processor.Result.SendStepMessageResult -> {

@@ -4,53 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/kotlinc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/BotMakerUtil.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/ChatMemberHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/CookieKey.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotInstance.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/MediaMessageHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/Navigator.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartChatHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StepHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotSender.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotStep.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgStepHandler.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgUserEntity.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgUserRepository.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/TGBotController.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/ChatLogProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/ChatMemberHandlerProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/ChatMemberUpdatesProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/CurrentStepFetchProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/DoBeforeProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/GetNextStepProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/InlineButtonsProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/MessageProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/NavButtonProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/Processor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/StartChatProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/StayOnThisStepProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/StepToRedirectProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/UserIdFetchProcessor.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/exceptions/OnInlineButtonsMessageReasonException.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/exceptions/OnNextStepMessageReasonException.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/exceptions/OnReceiveMessageReasonException.kt" afterDir="false" />
+    <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="init3">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/TGBotController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/TGBotController.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/GetNextStepProcessor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/GetNextStepProcessor.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,6 +55,9 @@
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -137,12 +98,34 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1711940881377</updated>
-      <workItem from="1711940882637" duration="34113000" />
+      <workItem from="1711940882637" duration="38004000" />
     </task>
+    <task id="LOCAL-00001" summary="init2">
+      <option name="closed" value="true" />
+      <created>1712089329342</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712089329342</updated>
+    </task>
+    <task id="LOCAL-00002" summary="init3">
+      <option name="closed" value="true" />
+      <created>1712090714716</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1712090714716</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="init2" />
+    <MESSAGE value="init3" />
+    <option name="LAST_COMMIT_MESSAGE" value="init3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

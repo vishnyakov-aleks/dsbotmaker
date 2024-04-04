@@ -19,7 +19,7 @@ internal class GetNextStepProcessor(
             val nextStep = nextStep(upd, userChatId, currentStep)
             stepHandler.updateStep(userChatId, nextStep.getType())
 
-            println("last upd: $upd")
+//            println("last upd: $upd")
             Processor.Result.SendStepMessageResult(
                 userChatId,
                 currentStep,
