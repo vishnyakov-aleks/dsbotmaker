@@ -88,10 +88,12 @@ internal class TGBot(
         } catch (t: Throwable) {
             t.printStackTrace()
             stepHandler.updateStep(userChatId, navigator.mainStepType)
-            sendStepMessage(
+                       if (errorMsg == null) {
+ sendStepMessage(
                 userChatId, navigator().mainStepType,
                 "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
             )
+                       }
         }
     }
 }
