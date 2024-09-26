@@ -14,6 +14,7 @@ internal class InlineButtonsProcessor : Processor {
         try {
             when {
                 upd.hasMessage() && upd.message.hasText() && upd.message.text.startsWith("/") -> {}
+                upd.hasMessage() && upd.message.hasText() && currentStep is TelegramBotStep.MessageReceiver -> {}
 
                 currentStep is TelegramBotStep.InlineButtonsSupported -> {
                     if (!upd.hasCallbackQuery()) {
