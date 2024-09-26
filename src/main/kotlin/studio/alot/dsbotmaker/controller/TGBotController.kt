@@ -40,8 +40,8 @@ internal class TGBotController(
         CurrentStepFetchProcessor(navigator, stepHandler),
         NavButtonProcessor(navigator, stepHandler),
         StepToRedirectProcessor(navigator, stepHandler),
-        InlineButtonsProcessor(),
         MessageProcessor(),
+        InlineButtonsProcessor(),
         ChatMemberUpdatesProcessor(),
         StayOnThisStepProcessor(),
         GetNextStepProcessor(navigator, stepHandler)
