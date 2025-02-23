@@ -8,13 +8,18 @@ internal class StartMessageHandler(
 
     fun processStartCommand(mainStep: String, message: Message) {
         val user = message.from
+        val referId = userRepository.getReferId(user.id)
+            ?: message.text.substringAfter("/start=ref").toLongOrNull()
+                ?.let { if (userRepository.getCurrentStep(it) != null) it else null }
+
         userRepository.save(
             TgUserEntity(
                 user.id,
                 user.firstName,
                 user.lastName,
                 user.userName,
-                currentStep = mainStep
+                currentStep = mainStep,
+                referId = referId
             )
         )
     }

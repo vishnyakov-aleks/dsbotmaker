@@ -7,6 +7,7 @@ data class TgUserEntity(
     val username: String?,
     val cookies: String = "{}",
     val currentStep: String,
+    val referId: Long?
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
