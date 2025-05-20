@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="change processor sort (p2)">
+    <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="deeplink system">
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgUserEntity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgUserEntity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgUserRepository.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TgUserRepository.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,7 +140,23 @@
       <option name="project" value="LOCAL" />
       <updated>1727382581215</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="refer system">
+      <option name="closed" value="true" />
+      <created>1740319472878</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1740319472878</updated>
+    </task>
+    <task id="LOCAL-00006" summary="refer system FIX2">
+      <option name="closed" value="true" />
+      <created>1740512849517</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1740512849517</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -150,7 +167,11 @@
     <MESSAGE value="init3" />
     <MESSAGE value="change processor sort" />
     <MESSAGE value="change processor sort (p2)" />
-    <option name="LAST_COMMIT_MESSAGE" value="change processor sort (p2)" />
+    <MESSAGE value="refer system" />
+    <MESSAGE value="refer system FIX" />
+    <MESSAGE value="refer system FIX2" />
+    <MESSAGE value="deeplink system" />
+    <option name="LAST_COMMIT_MESSAGE" value="deeplink system" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

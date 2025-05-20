@@ -22,7 +22,7 @@ object DeepStateBotMakerFactory {
             onUpdateReceivedDoBefore,
             deepStateBotConfig,
             ChatMemberHandler(),
-            StartMessageHandler(repository)
+            StartMessageHandler(repository, deepStateBotConfig)
         )
 
         return DeepStateBotInstance(stepHandler, tgBot).also {

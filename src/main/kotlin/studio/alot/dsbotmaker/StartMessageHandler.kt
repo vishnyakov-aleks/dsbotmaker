@@ -3,7 +3,8 @@ package studio.alot.dsbotmaker
 import org.telegram.telegrambots.meta.api.objects.Message
 
 internal class StartMessageHandler(
-    private val userRepository: TgUserRepository
+    private val userRepository: TgUserRepository,
+    private val deepStateBotConfig: DeepStateBotConfig
 ) {
 
     fun processStartCommand(mainStep: String, message: Message) {
@@ -23,5 +24,13 @@ internal class StartMessageHandler(
                 referId = referId
             )
         )
+
+        if (message.text.substringAfter("/start").isNotEmpty()) {
+            try {
+                deepStateBotConfig.doOnDeeplink(message.from.id, message.text)
+            } catch (e: Throwable) {
+                e.printStackTrace()
+            }
+        }
     }
 }
