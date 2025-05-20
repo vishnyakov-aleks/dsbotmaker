@@ -1,7 +1,7 @@
 package studio.alot.dsbotmaker
 
 interface DeepStateBotConfig {
-    fun doOnDeeplink(tgUserId: Long, message: String)
+    fun rewriteStepOnDeeplink(tgUserId: Long, message: String): TelegramBotStep
 
     val mainStepType: String
     val botUsername: String

@@ -12,8 +12,8 @@ internal class StartChatProcessor(
 ) : Processor {
     override fun process(upd: Update, dependency: Processor.Result): Processor.Result {
        return if (upd.message?.text?.startsWith("/start") == true) {
-            botStartMessageHandler.processStartCommand(deepStateBotConfig.mainStepType, upd.message)
-            Processor.Result.SendStepMessageResult(upd.message.from.id, mainStep, mainStep, false)
+            val step = botStartMessageHandler.processStartCommand(deepStateBotConfig.mainStepType, upd.message) ?: mainStep
+            Processor.Result.SendStepMessageResult(upd.message.from.id, step, step, false)
         } else {
             dependency
        }

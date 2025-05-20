@@ -7,7 +7,7 @@ internal class StartMessageHandler(
     private val deepStateBotConfig: DeepStateBotConfig
 ) {
 
-    fun processStartCommand(mainStep: String, message: Message) {
+    fun processStartCommand(mainStep: String, message: Message): TelegramBotStep? {
         val user = message.from
         val referId = (userRepository.getReferId(user.id)
             ?: message.text.substringAfter("/start ref").toLongOrNull()
@@ -25,12 +25,16 @@ internal class StartMessageHandler(
             )
         )
 
-        if (message.text.substringAfter("/start").isNotEmpty()) {
+        return if (message.text.substringAfter("/start").isNotEmpty()) {
             try {
-                deepStateBotConfig.doOnDeeplink(message.from.id, message.text)
+                deepStateBotConfig.rewriteStepOnDeeplink(message.from.id, message.text)
             } catch (e: Throwable) {
                 e.printStackTrace()
+                null
             }
+        } else {
+            null
         }
+
     }
 }
