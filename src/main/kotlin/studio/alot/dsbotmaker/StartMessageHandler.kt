@@ -27,7 +27,12 @@ internal class StartMessageHandler(
 
         return if (message.text.substringAfter("/start").isNotEmpty()) {
             try {
-                deepStateBotConfig.rewriteStepOnDeeplink(message.from.id, message.text)
+                val newStep = deepStateBotConfig.rewriteStepOnDeeplink(message.from.id, message.text)
+                if (newStep != null) {
+                    userRepository.updateStep(user.id, newStep.getType())
+                }
+
+                newStep
             } catch (e: Throwable) {
                 e.printStackTrace()
                 null
