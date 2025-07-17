@@ -10,7 +10,8 @@ internal class StartMessageHandler(
     fun processStartCommand(mainStep: String, message: Message): TelegramBotStep? {
         val user = message.from
         val referId = (userRepository.getReferId(user.id)
-            ?: message.text.substringAfter("/start ref").toLongOrNull()
+            ?: (message.text.substringAfter("/start r").toLongOrNull() ?:
+            message.text.substringAfter("/start ref").toLongOrNull()) //старый вариант - конфликт с тг
                 ?.let { if (userRepository.getCurrentStep(it) != null) it else null }
                 )?.let { if (it == user.id) null else it }
 
