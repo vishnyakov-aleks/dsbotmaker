@@ -1,7 +1,9 @@
+import studio.alot.dsbotmaker.BotLogger
+
 fun main(args: Array<String>) {
-    println("Hello World!")
+    BotLogger.info("Hello World!")
 
     // Try adding program arguments via Run/Debug configuration.
     // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
-    println("Program arguments: ${args.joinToString()}")
+    BotLogger.info("Program arguments: ${args.joinToString()}")
 }

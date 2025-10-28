@@ -14,7 +14,7 @@ object DeepStateBotMakerFactory {
     ): DeepStateBotInstance {
 
         val stepHandler = TgStepHandler(repository)
-        val tgBot = TGBot(deepStateBotConfig.botUsername, stepHandler, deepStateBotConfig.botToken)
+        val tgBot = TGBot(deepStateBotConfig.botUsername, stepHandler, deepStateBotConfig.botToken, deepStateBotConfig)
         TGBotController(
             stepHandler,
             navigator = Navigator(steps, deepStateBotConfig),

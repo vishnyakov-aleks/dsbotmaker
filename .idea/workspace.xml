@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="кеш данные для компиляции шага">
+    <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="ридми кеш данных для компиляции шага">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/BotLogger.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,18 +32,18 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "vishnyakov-aleks"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;vishnyakov-aleks&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/vishnyakov-aleks/dsbotmaker.git",
-    "accountId": "aa786a0f-73d9-40ae-b437-3a6b5160c44a"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/vishnyakov-aleks/dsbotmaker.git&quot;,
+    &quot;accountId&quot;: &quot;aa786a0f-73d9-40ae-b437-3a6b5160c44a&quot;
   }
-}]]></component>
+}</component>
   <component name="GradleModuleStateConfig" initialized="true" />
   <component name="HighlightingSettingsPerFile">
     <setting file="jar://$MAVEN_REPOSITORY$/org/jetbrains/kotlin/kotlin-stdlib/1.9.0/kotlin-stdlib-1.9.0-sources.jar!/kotlin/Collections.kt" root0="SKIP_INSPECTION" />
@@ -67,7 +73,7 @@
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
     &quot;git-widget-placeholder&quot;: &quot;main&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/aleksey/IdeaProjects/dsbotmaker&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/aleksey/IdeaProjects/AlotProMS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -214,7 +220,15 @@
       <option name="project" value="LOCAL" />
       <updated>1761635954467</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="ридми кеш данных для компиляции шага">
+      <option name="closed" value="true" />
+      <created>1761648517894</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1761648517894</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -245,7 +259,8 @@
     <MESSAGE value="deeplink system (fix3)" />
     <MESSAGE value="рефералки новый префикс" />
     <MESSAGE value="кеш данные для компиляции шага" />
-    <option name="LAST_COMMIT_MESSAGE" value="кеш данные для компиляции шага" />
+    <MESSAGE value="ридми кеш данных для компиляции шага" />
+    <option name="LAST_COMMIT_MESSAGE" value="ридми кеш данных для компиляции шага" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

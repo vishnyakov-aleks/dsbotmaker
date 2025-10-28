@@ -12,7 +12,8 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 internal class TGBot(
     private val botUsername: String,
     private val stepHandler: StepHandler,
-    botToken: String
+    botToken: String,
+    private val config: DeepStateBotConfig
 ) : TelegramLongPollingBot(botToken),
     CoroutineScope, TelegramBotSender {
 
@@ -38,7 +39,7 @@ internal class TGBot(
             updateReceivedCallback = callback
         } catch (ex: Throwable) {
             //todo передать Payload в делегирование
-            ex.printStackTrace()
+            BotLogger.error("Error during bot initialization", ex)
         }
     }
 
@@ -46,7 +47,10 @@ internal class TGBot(
         try {
             updateReceivedCallback(upd)
         } catch (throwable: Throwable) {
-            throwable.printStackTrace()
+            // Вызов глобального обработчика ошибок, если он предоставлен
+            config.globalErrorHandler?.invoke(throwable, upd, this)
+            
+            BotLogger.error("Error during update processing", throwable)
             val userId = if (upd.hasMessage()) {
                 upd.message.chatId
             } else if (upd.hasCallbackQuery()) {
@@ -57,10 +61,12 @@ internal class TGBot(
 
             runBlocking {
                 stepHandler.updateStep(userId, navigator.mainStepType)
+                val errorMessage = config.customErrorMessage ?: 
+                    "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
                 sendStepMessage(
                     userId,
                     navigator.mainStepType,
-                    "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
+                    errorMessage
                 )
             }
 
@@ -71,12 +77,17 @@ internal class TGBot(
         try {
             super.sendStepMessage(userChatId, stepType, errorMsg)
         } catch (t: Throwable) {
-            t.printStackTrace()
+            // Вызов глобального обработчика ошибок, если он предоставлен
+            config.globalErrorHandler?.invoke(t, Update(), this)
+            
+            BotLogger.error("Error sending step message by type", t)
             stepHandler.updateStep(userChatId, navigator.mainStepType)
             if (errorMsg == null) {
+                val errorMessage = config.customErrorMessage ?: 
+                    "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
                 sendStepMessage(
                     userChatId, navigator().mainStepType,
-                    "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
+                    errorMessage
                 )
             }
         }
@@ -86,14 +97,19 @@ internal class TGBot(
         try {
             super.sendStepMessage(userChatId, step, errorMsg)
         } catch (t: Throwable) {
-            t.printStackTrace()
+            // Вызов глобального обработчика ошибок, если он предоставлен
+            config.globalErrorHandler?.invoke(t, Update(), this)
+            
+            BotLogger.error("Error sending step message by step object", t)
             stepHandler.updateStep(userChatId, navigator.mainStepType)
-                       if (errorMsg == null) {
- sendStepMessage(
-                userChatId, navigator().mainStepType,
-                "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
-            )
-                       }
+            if (errorMsg == null) {
+                val errorMessage = config.customErrorMessage ?: 
+                    "📛Возникла непредвиденная ошибка. Мы уже оповестили разработчиков о ней и вернули Вас в главное меню"
+                sendStepMessage(
+                    userChatId, navigator().mainStepType,
+                    errorMessage
+                )
+            }
         }
     }
 }

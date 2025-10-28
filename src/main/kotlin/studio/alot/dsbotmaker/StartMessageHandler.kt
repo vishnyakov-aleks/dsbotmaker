@@ -35,7 +35,7 @@ internal class StartMessageHandler(
 
                 newStep
             } catch (e: Throwable) {
-                e.printStackTrace()
+                BotLogger.error("Error processing start command deeplink", e)
                 null
             }
         } else {
