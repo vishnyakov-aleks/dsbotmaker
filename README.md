@@ -4,6 +4,271 @@
 
 **dsbotmaker** - это Kotlin-фреймворк для создания Telegram ботов с пошаговой навигацией и состоянием пользователя. Проект использует библиотеку `telegrambots` версии 6.8.0 и построен на концепции "шагов" (steps) с автоматической навигацией между ними.
 
+## Инстанс бота (DeepStateBotInstance)
+
+**`DeepStateBotInstance`** - основной класс для работы с ботом после его создания через фабрику. Предоставляет доступ к управлению шагами пользователя, работе с cookies и отправке сообщений.
+
+### Создание инстанса
+
+```kotlin
+class DeepStateBotInstance(
+    private val stepHandler: StepHandler,
+    val sender: TelegramBotSender
+)
+```
+
+### Основные методы инстанса
+
+#### Управление шагами
+
+**`forceChangeStep`** - принудительное изменение шага пользователя с отправкой сообщения:
+```kotlin
+suspend fun forceChangeStep(
+    userChatId: Long,
+    stepType: String,
+    errorMsg: String? = null
+)
+```
+
+**Параметры:**
+- `userChatId` - ID чата пользователя
+- `stepType` - тип нового шага
+- `errorMsg` - опциональное сообщение об ошибке, которое будет отправлено перед переходом
+
+**Пример использования:**
+```kotlin
+// Переход на главное меню
+botInstance.forceChangeStep(userChatId, "main_menu")
+
+// Переход с сообщением об ошибке
+botInstance.forceChangeStep(userChatId, "login_step", "Неверный пароль, попробуйте снова")
+```
+
+#### Работа с cookies (данными состояния)
+
+**`saveCookie`** - сохранение данных в cookies пользователя:
+```kotlin
+fun <T: Serializable> saveCookie(
+    userChatId: Long, 
+    vararg pair: Pair<CookieKey<T>, T?>
+)
+```
+
+**`getCookie`** - получение данных из cookies пользователя:
+```kotlin
+fun <T : Serializable> getCookie(
+    userChatId: Long, 
+    cookieKey: CookieKey<T>
+): T?
+```
+
+**Пример использования:**
+```kotlin
+// Сохранение данных пользователя
+botInstance.saveCookie(
+    userChatId,
+    CookieKey(String::class.java, "user_name") to "Иван Иванов",
+    CookieKey(Int::class.java, "user_age") to 25,
+    CookieKey(Boolean::class.java, "is_premium") to true
+)
+
+// Получение данных
+val userName = botInstance.getCookie(userChatId, CookieKey(String::class.java, "user_name"))
+val userAge = botInstance.getCookie(userChatId, CookieKey(Int::class.java, "user_age"))
+```
+
+### Отправка сообщений через TelegramBotSender
+
+Инстанс бота предоставляет доступ к `sender` для отправки различных типов сообщений:
+
+#### Базовые методы отправки
+
+**`sendHtmlMessage`** - отправка HTML-сообщения:
+```kotlin
+suspend fun sendHtmlMessage(
+    chatId: Long,
+    textBody: String,
+    replyKeyboard: ReplyKeyboard?,
+    notify: Boolean = true
+): Message?
+```
+
+**`editHtmlMessage`** - редактирование существующего сообщения:
+```kotlin
+suspend fun editHtmlMessage(
+    chatId: Long, 
+    messageId: Int, 
+    textBody: String, 
+    replyKeyboard: InlineKeyboardMarkup?
+)
+```
+
+**`sendStepMessage`** - отправка сообщения шага с автоматическим созданием клавиатуры:
+```kotlin
+suspend fun sendStepMessage(
+    userChatId: Long,
+    stepType: String,
+    errorMsg: String? = null
+)
+
+suspend fun sendStepMessage(
+    userChatId: Long,
+    step: TelegramBotStep,
+    errorMsg: String? = null
+)
+```
+
+**`editStepMessage`** - редактирование сообщения шага:
+```kotlin
+suspend fun editStepMessage(
+    chatId: Long,
+    messageId: Int,
+    step: TelegramBotStep,
+    removeInlineKeyboard: Boolean
+)
+```
+
+#### Отправка медиа-контента
+
+**`execute(SendPhoto)`** - отправка фото:
+```kotlin
+fun execute(method: SendPhoto): Message
+```
+
+**`execute(SendVideo)`** - отправка видео:
+```kotlin
+fun execute(method: SendVideo): Message
+```
+
+**`execute(SendDocument)`** - отправка документа:
+```kotlin
+fun execute(method: SendDocument): Message
+```
+
+**`execute(SendVoice)`** - отправка голосового сообщения:
+```kotlin
+fun execute(method: SendVoice): Message
+```
+
+**`execute(SendMediaGroup)`** - отправка группы медиа:
+```kotlin
+fun execute(method: SendMediaGroup): List<Message>
+```
+
+#### Работа с группами
+
+**`getChatMemberCount`** - получение количества участников чата:
+```kotlin
+suspend fun getChatMemberCount(groupChatId: Long): Int
+```
+
+### Практические примеры использования
+
+#### Пример 1: Управление пользовательской сессией
+```kotlin
+class UserSessionManager(private val botInstance: DeepStateBotInstance) {
+    
+    suspend fun startUserSession(userChatId: Long) {
+        // Сохраняем время начала сессии
+        botInstance.saveCookie(
+            userChatId,
+            CookieKey(Long::class.java, "session_start") to System.currentTimeMillis()
+        )
+        
+        // Переходим на главное меню
+        botInstance.forceChangeStep(userChatId, "main_menu")
+    }
+    
+    suspend fun endUserSession(userChatId: Long) {
+        // Очищаем сессионные данные
+        botInstance.saveCookie(
+            userChatId,
+            CookieKey(Long::class.java, "session_start") to null,
+            CookieKey(String::class.java, "current_action") to null
+        )
+        
+        // Переходим на шаг завершения
+        botInstance.forceChangeStep(userChatId, "session_end")
+    }
+}
+```
+
+#### Пример 2: Работа с формами ввода
+```kotlin
+class RegistrationForm(private val botInstance: DeepStateBotInstance) {
+    
+    suspend fun processRegistrationStep(userChatId: Long, input: String) {
+        val currentStep = botInstance.getCookie(userChatId, CookieKey(String::class.java, "reg_step"))
+        
+        when (currentStep) {
+            "name" -> {
+                botInstance.saveCookie(userChatId, CookieKey(String::class.java, "user_name") to input)
+                botInstance.saveCookie(userChatId, CookieKey(String::class.java, "reg_step") to "email")
+                botInstance.forceChangeStep(userChatId, "input_email")
+            }
+            "email" -> {
+                botInstance.saveCookie(userChatId, CookieKey(String::class.java, "user_email") to input)
+                botInstance.saveCookie(userChatId, CookieKey(String::class.java, "reg_step") to null)
+                botInstance.forceChangeStep(userChatId, "registration_complete")
+            }
+        }
+    }
+}
+```
+
+#### Пример 3: Отправка уведомлений
+```kotlin
+class NotificationService(private val botInstance: DeepStateBotInstance) {
+    
+    suspend fun sendNotification(userChatId: Long, message: String, isImportant: Boolean = false) {
+        try {
+            botInstance.sender.sendHtmlMessage(
+                chatId = userChatId,
+                textBody = if (isImportant) "🔔 <b>$message</b>" else message,
+                replyKeyboard = null,
+                notify = isImportant
+            )
+        } catch (e: TelegramApiException) {
+            // Логирование ошибки отправки
+            println("Не удалось отправить уведомление пользователю $userChatId: ${e.message}")
+        }
+    }
+    
+    suspend fun sendBroadcast(message: String, userIds: List<Long>) {
+        userIds.forEach { userId ->
+            sendNotification(userId, message)
+            // Задержка для избежания лимитов Telegram
+            delay(100)
+        }
+    }
+}
+```
+
+### Обработка ошибок
+
+Все методы отправки сообщений могут выбрасывать `TelegramApiException`:
+
+```kotlin
+try {
+    botInstance.forceChangeStep(userChatId, "main_menu")
+} catch (e: TelegramApiException) {
+    when {
+        e.message?.contains("bot was blocked") == true -> {
+            // Пользователь заблокировал бота
+            println("Пользователь $userChatId заблокировал бота")
+        }
+        e.message?.contains("chat not found") == true -> {
+            // Чат не найден
+            println("Чат $userChatId не найден")
+        }
+        else -> {
+            // Другие ошибки
+            println("Ошибка Telegram API: ${e.message}")
+        }
+    }
+}
+```
+
 ## Ключевые интерфейсы и маркеры
 
 ### Основные интерфейсы шагов (`TelegramBotStep`)
@@ -15,7 +280,8 @@
 
 **Маркеры поддержки функциональности:**
 
-### Интерфейсы для кнопок
+#### Интерфейсы для кнопок
+
 - **`ButtonsSupported`** - поддержка обычных кнопок клавиатуры
   - `getButtons(userChatId: Long): List<KeyboardRow>`
   - `getInputPlaceholder(userChatId: Long): String?`
@@ -30,7 +296,8 @@
   - `getColdAction(): ColdAction`
   - `getColdActionButtons(userChatId: Long): List<List<HoldActionInlineKeyboardButtonWrapper>>`
 
-### Интерфейсы обработки сообщений
+#### Интерфейсы обработки сообщений
+
 - **`MessageReceiver`** - получение текстовых сообщений
   - `onMessageReceived(message: Message)` - обработка входящего сообщения
   - `getInputPlaceholder(userChatId: Long): String?` - плейсхолдер для поля ввода
@@ -39,7 +306,7 @@
   - `getNextStep(userChatId: Long, message: String): String` - определение следующего шага на основе текста сообщения
   - **Логика работы**: При вводе текста пользователем система вызывает эту функцию для определения, на какой шаг перейти. Можно использовать как для обычных кнопок, так и для инлайн-кнопок.
 
-### Интерфейсы навигации и поведения
+#### Интерфейсы навигации и поведения
 
 - **`NoSupportBackButton`** / **`NoSupportInlineBackButton`** - отключение кнопки "Назад"
   - Убирает автоматическую кнопку "Вернуться назад" из навигации
@@ -66,7 +333,8 @@
   - `skipStep(userChatId: Long): Boolean` - определяет, можно ли пропустить шаг при переходе вперед
   - `skipBackStep(userChatId: Long): Boolean` - определяет, можно ли пропустить шаг при переходе назад
 
-### Дополнительные интерфейсы
+#### Дополнительные интерфейсы
+
 - **`ChatMemberUpdatesSupported`** - обработка обновлений участников чата
 
 ### Интерфейс хранения данных в пределах шага (`StepDataHolder`)
@@ -75,7 +343,7 @@
 
 **Для чего нужен:**
 - Экономия запросов к БД - данные загружаются один раз и переиспользуются во всех методах шага
-- Удобство разработки - доступ к данным из любых методов шага без повторных запросов
+- Удобство разработки - доступ к данных из любых методов шага без повторных запросов
 - Автоматическое управление жизненным циклом - данные очищаются после отправки сообщения
 
 **Ключевые методы:**
