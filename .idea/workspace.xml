@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="рефералки новый префикс">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StepDataExample.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/processors/StepDataProcessor.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotStep.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotStep.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/TGBotController.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/controller/TGBotController.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

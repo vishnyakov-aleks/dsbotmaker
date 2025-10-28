@@ -38,6 +38,7 @@ internal class TGBotController(
             deepStateBotConfig
         ),
         CurrentStepFetchProcessor(navigator, stepHandler),
+        StepDataProcessor(), // Инициализация данных шага перед вызовом других методов
         NavButtonProcessor(navigator, stepHandler),
         StepToRedirectProcessor(navigator, stepHandler),
         MessageProcessor(),

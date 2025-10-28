@@ -105,4 +105,38 @@ interface TelegramBotStep {
     interface RedirectToAnotherStep : TelegramBotStep {
         fun getAnotherStep(userChatId: Long): String?
     }
+
+    interface StepDataHolder<T : Any> : TelegramBotStep {
+        // Хранилище данных - должен быть реализован в шаге
+        val dataStorage: MutableMap<Long, T>
+        
+        // Фабричный метод для создания нового экземпляра данных
+        fun createStepData(userChatId: Long): T
+        
+        // Основной метод получения данных с автоматической инициализацией
+        fun getStepData(userChatId: Long): T {
+            return dataStorage[userChatId] ?: run {
+                val newData = createStepData(userChatId)
+                dataStorage[userChatId] = newData
+                newData
+            }
+        }
+        
+        // Установка данных
+        fun setStepData(userChatId: Long, data: T) {
+            dataStorage[userChatId] = data
+        }
+        
+        // Default реализация очистки
+        fun clearStepData(userChatId: Long) {
+            dataStorage.remove(userChatId)
+        }
+        
+        // Вспомогательный метод для обновления данных
+        fun updateStepData(userChatId: Long, update: T.() -> Unit) {
+            val data = getStepData(userChatId)
+            data.update()
+            setStepData(userChatId, data)
+        }
+    }
 }

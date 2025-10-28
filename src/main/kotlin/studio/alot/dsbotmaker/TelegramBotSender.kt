@@ -93,6 +93,10 @@ interface TelegramBotSender {
             val keyboardMarkup = createKeyboardMarkup(userChatId, step)
             sendHtmlMessage(userChatId, step.getBody(userChatId), keyboardMarkup)
 
+            // Очистка данных после отправки сообщения
+            if (step is TelegramBotStep.StepDataHolder<*>) {
+                step.clearStepData(userChatId)
+            }
     }
 
     suspend fun editStepMessage(
