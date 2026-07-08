@@ -1,16 +1,17 @@
 package studio.alot.dsbotmaker
 
 import kotlinx.coroutines.delay
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.ParseMode
+import org.telegram.telegrambots.meta.api.methods.botapimethods.BotApiMethod
 import org.telegram.telegrambots.meta.api.methods.groupadministration.GetChatMemberCount
 import org.telegram.telegrambots.meta.api.methods.send.*
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText
-import org.telegram.telegrambots.meta.api.objects.Message
+import org.telegram.telegrambots.meta.api.objects.message.Message
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 import java.io.Serializable
@@ -18,7 +19,7 @@ import java.lang.Exception
 
 interface TelegramBotSender {
     @Throws(TelegramApiException::class)
-    fun <T : Serializable?, Method : BotApiMethod<T>?> execute(method: Method): T
+    fun <T : Serializable, Method : BotApiMethod<T>> execute(method: Method): T
 
     @Throws(TelegramApiException::class)
     fun execute(method: SendVideo): Message
@@ -41,15 +42,13 @@ interface TelegramBotSender {
         replyKeyboard: ReplyKeyboard?,
         notify: Boolean = true
     ): Message? {
-        val message = SendMessage(
-            chatId.toString(),
-            textBody
-        ).also {
-            it.parseMode = ParseMode.HTML
-            it.replyMarkup = replyKeyboard
-            it.disableNotification = !notify
-        }
-
+        val message = SendMessage.builder()
+            .chatId(chatId.toString())
+            .text(textBody)
+            .parseMode(ParseMode.HTML)
+            .replyMarkup(replyKeyboard)
+            .disableNotification(!notify)
+            .build()
 
         return execute(message).also {
             delay(1000)
@@ -57,22 +56,20 @@ interface TelegramBotSender {
     }
 
     suspend fun editHtmlMessage(chatId: Long, messageId: Int, textBody: String, replyKeyboard: InlineKeyboardMarkup?) {
-        val message = EditMessageText(
-            chatId.toString(),
-            messageId,
-            null,
-            textBody,
-            ParseMode.HTML,
-            true,
-            replyKeyboard,
-            null,
-        )
+        val message = EditMessageText.builder()
+            .chatId(chatId.toString())
+            .messageId(messageId)
+            .text(textBody)
+            .parseMode(ParseMode.HTML)
+            .disableWebPagePreview(true)
+            .replyMarkup(replyKeyboard)
+            .build()
 
         execute(message)
     }
 
     suspend fun getChatMemberCount(groupChatId: Long): Int {
-        return execute(GetChatMemberCount(groupChatId.toString()))
+        return execute(GetChatMemberCount.builder().chatId(groupChatId.toString()).build())
     }
 
     suspend fun sendStepMessage(
@@ -141,9 +138,11 @@ interface TelegramBotSender {
     private fun getAllButtons(
         step: TelegramBotStep.InlineButtonsSupported,
         chatId: Long
-    ): List<List<InlineKeyboardButton>> {
-        return step.getButtons(chatId) + step.getNextStepButtons(chatId) + navigator().getNavigateButtons(step)
-
+    ): List<InlineKeyboardRow> {
+        val buttons: List<List<InlineKeyboardButton>> = step.getButtons(chatId) +
+                step.getNextStepButtons(chatId) +
+                navigator().getNavigateButtons(step)
+        return buttons.map { rowButtons -> InlineKeyboardRow(rowButtons) }
     }
 
     fun getAllButtons(step: TelegramBotStep.ButtonsSupported?, chatId: Long): List<KeyboardRow> =

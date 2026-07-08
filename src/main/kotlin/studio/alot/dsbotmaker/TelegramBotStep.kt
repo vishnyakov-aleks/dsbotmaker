@@ -1,9 +1,10 @@
 package studio.alot.dsbotmaker
 
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery
-import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated
-import org.telegram.telegrambots.meta.api.objects.Message
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberUpdated
+import org.telegram.telegrambots.meta.api.objects.message.Message
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 import studio.alot.dsbotmaker.controller.processors.ChatMemberUpdatesProcessor
 import studio.alot.dsbotmaker.controller.processors.GetNextStepProcessor
@@ -49,8 +50,8 @@ interface TelegramBotStep {
     }
 
     interface InlineButtonsSupported : TelegramBotStep {
-        fun getButtons(userChatId: Long): List<List<InlineKeyboardButton>>
-        fun getNextStepButtons(userChatId: Long): List<List<InlineKeyboardButton>>
+        fun getButtons(userChatId: Long): List<InlineKeyboardRow>
+        fun getNextStepButtons(userChatId: Long): List<InlineKeyboardRow>
 
         @Throws(OnInlineButtonsMessageReasonException::class)
         fun onCallbackDataReceived(callbackQuery: CallbackQuery)
@@ -68,13 +69,13 @@ interface TelegramBotStep {
         fun getColdAction(): ColdAction
         fun getColdActionButtons(userChatId: Long): List<List<HoldActionInlineKeyboardButtonWrapper>>
 
-        override fun getButtons(userChatId: Long): List<List<InlineKeyboardButton>> {
+        override fun getButtons(userChatId: Long): List<InlineKeyboardRow> {
             return getColdActionButtons(userChatId)
                 .map { row ->
                     row.map { button ->
                         button.value.callbackData = "${getColdAction().ordinal}$DIVIDER${button.value.callbackData}"
                         button.value
-                    }
+                    }.let { InlineKeyboardRow(it) }
                 }
         }
 

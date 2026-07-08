@@ -1,6 +1,7 @@
 package studio.alot.dsbotmaker
 
-import org.telegram.telegrambots.meta.api.objects.Message
+import org.telegram.telegrambots.meta.api.objects.message.Message
+
 
 internal class StartMessageHandler(
     private val userRepository: TgUserRepository,

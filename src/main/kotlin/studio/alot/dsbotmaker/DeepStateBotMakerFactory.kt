@@ -25,6 +25,9 @@ object DeepStateBotMakerFactory {
             StartMessageHandler(repository, deepStateBotConfig)
         )
 
+        // Запускаем polling после инициализации контроллера
+        tgBot.start()
+
         return DeepStateBotInstance(stepHandler, tgBot).also {
             instanceList[deepStateBotConfig.botUsername] = it
         }

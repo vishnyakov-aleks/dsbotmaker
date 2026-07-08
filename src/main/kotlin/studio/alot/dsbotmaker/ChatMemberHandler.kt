@@ -1,6 +1,7 @@
 package studio.alot.dsbotmaker
 
-import org.telegram.telegrambots.meta.api.objects.ChatMemberUpdated
+import org.telegram.telegrambots.meta.api.objects.chatmember.ChatMemberUpdated
+
 
 internal class ChatMemberHandler {
     fun processPacket(myChatMember: ChatMemberUpdated): ProcessPacketResult {

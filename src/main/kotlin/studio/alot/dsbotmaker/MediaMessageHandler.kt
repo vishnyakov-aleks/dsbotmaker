@@ -1,7 +1,7 @@
 package studio.alot.dsbotmaker
 
 import org.telegram.telegrambots.meta.api.methods.GetFile
-import org.telegram.telegrambots.meta.api.objects.Message
+import org.telegram.telegrambots.meta.api.objects.message.Message
 
 internal class MediaMessageHandler {
 

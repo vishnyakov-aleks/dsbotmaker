@@ -2,6 +2,7 @@ package studio.alot.dsbotmaker
 
 import org.telegram.telegrambots.meta.api.objects.Update
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardRow
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow
 
 class Navigator(
@@ -34,24 +35,25 @@ class Navigator(
     }
 
 
-    fun getNavigateButtons(step: TelegramBotStep.InlineButtonsSupported?): List<List<InlineKeyboardButton>> {
+    fun getNavigateButtons(step: TelegramBotStep.InlineButtonsSupported?): List<InlineKeyboardRow> {
         val stepType = (step as? TelegramBotStep)?.getType()
         return if (step == null || stepType == mainStepType || step is TelegramBotStep.NoSupportInlineNavigateButtons) {
-            return emptyList()
+            emptyList()
         } else if (stepType != mainStepType) {
-            listOf(ArrayList<InlineKeyboardButton>().apply {
-                if (step !is TelegramBotStep.NoSupportInlineBackButton) {
-                    add(
-                        InlineKeyboardButton
-                            .builder()
-                            .text(NAV_BACK_BUTTON)
-                            .callbackData(NAV_BACK_BUTTON_CALLBACK)
-                            .build()
-                    )
-                }
-
-                add(InlineKeyboardButton.builder().text(NAV_HOME_BUTTON).callbackData(NAV_HOME_BUTTON_CALLBACK).build())
-            })
+            val buttons = mutableListOf<InlineKeyboardButton>()
+            if (step !is TelegramBotStep.NoSupportInlineBackButton) {
+                buttons.add(
+                    InlineKeyboardButton
+                        .builder()
+                        .text(NAV_BACK_BUTTON)
+                        .callbackData(NAV_BACK_BUTTON_CALLBACK)
+                        .build()
+                )
+            }
+            buttons.add(
+                InlineKeyboardButton.builder().text(NAV_HOME_BUTTON).callbackData(NAV_HOME_BUTTON_CALLBACK).build()
+            )
+            listOf(InlineKeyboardRow(buttons))
         } else {
             emptyList()
         }

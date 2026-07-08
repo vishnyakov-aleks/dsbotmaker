@@ -23,4 +23,36 @@ interface DeepStateBotConfig {
      */
     val customErrorMessage: String?
         get() = null
+
+    // ==================== Proxy ====================
+
+    /**
+     * Включить прокси для Telegram бота.
+     */
+    val proxyEnabled: Boolean
+        get() = false
+
+    /**
+     * Хост прокси-сервера.
+     */
+    val proxyHost: String?
+        get() = null
+
+    /**
+     * Порт прокси-сервера.
+     */
+    val proxyPort: Int?
+        get() = null
+
+    /**
+     * Имя пользователя для аутентификации на прокси (если требуется).
+     */
+    val proxyUsername: String?
+        get() = null
+
+    /**
+     * Пароль для аутентификации на прокси (если требуется).
+     */
+    val proxyPassword: String?
+        get() = null
 }

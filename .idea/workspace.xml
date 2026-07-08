@@ -5,14 +5,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0816f024-e1a8-439d-a5c9-764b2a64d591" name="Changes" comment="ридми кеш данных для компиляции шага">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/BotLogger.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/ChatMemberHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/ChatMemberHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotConfig.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/DeepStateBotMakerFactory.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/MediaMessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/MediaMessageHandler.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/Navigator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/Navigator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartChatHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartChatHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/StartMessageHandler.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TGBot.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotSender.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotSender.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotStep.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/TelegramBotStep.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +35,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -58,7 +63,6 @@
   &quot;associatedIndex&quot;: 5
 }</component>
   <component name="ProjectId" id="2eTuRKt0ZdjCkgQBF2vzXyEvEj8" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -267,7 +271,7 @@
       <breakpoints>
         <line-breakpoint type="kotlin-line">
           <url>file://$PROJECT_DIR$/src/main/kotlin/studio/alot/dsbotmaker/Navigator.kt</url>
-          <line>38</line>
+          <line>39</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="kotlin-line">
