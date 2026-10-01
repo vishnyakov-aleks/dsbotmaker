@@ -23,6 +23,10 @@ internal class TGBotController(
 
     override val coroutineContext = CoroutineName("TGBot")
 
+    private companion object {
+        const val ERROR_MESSAGE_DISPLAY_MILLIS = 3_000L
+    }
+
     init {
         tgBot.init(navigator) { this.onUpdateReceived(it) }
     }
@@ -116,6 +120,9 @@ internal class TGBotController(
             step,
             result.errorMsg
         )
+        // Keep validation feedback visible before restoring the actionable step.
+        delay(ERROR_MESSAGE_DISPLAY_MILLIS)
+        tgBot.sendStepMessage(userChatId, step)
     }
 
     private fun sendStepMessage(upd: Update, result: Processor.Result.SendStepMessageResult) = launch(IO) {
